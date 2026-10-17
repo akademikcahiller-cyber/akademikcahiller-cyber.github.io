@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Akademik Cahiller · YouTube</title>
+<meta name="description" content="Akademik Cahiller YouTube kanalı: bilim, tarih, harita.">
+<style>
+  :root { --bg: #0d0f15; --card: #171a22; --text: #f2f2f5; --muted: #a9adb8; --red: #cc0000; --gold: #f5b028; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
+         font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+         display: flex; align-items: center; justify-content: center; padding: 16px; }
+  .card { width: 100%; max-width: 420px; background: var(--card); border-radius: 18px; padding: 26px 22px; text-align: center; }
+  .logo { width: 96px; height: 96px; border-radius: 50%; border: 4px solid var(--gold); background: #fff center/cover no-repeat;
+          margin: 0 auto 14px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .tag { color: var(--gold); font-size: 14px; letter-spacing: 2px; margin: 0 0 16px; }
+  p { color: var(--muted); font-size: 15px; margin: 0 0 18px; line-height: 1.45; }
+  .btn { display: block; width: 100%; padding: 15px; border-radius: 999px; font-size: 17px; font-weight: 700;
+         text-decoration: none; margin-bottom: 10px; }
+  .app { background: var(--red); color: #fff; }
+  .web { background: transparent; color: var(--text); border: 1px solid #3a3f4b; font-weight: 600; font-size: 15px; }
+  .hint { font-size: 13px; color: var(--muted); margin-top: 14px; display: none; }
+  .hint b { color: var(--gold); }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo" id="logo"></div>
+  <h1>Akademik Cahiller</h1>
+  <div class="tag">BİLİM · TARİH · HARİTA</div>
+  <p>Kanal YouTube uygulamasında açılıyor…</p>
+  <a class="btn app" id="app" href="#">YouTube uygulamasında aç</a>
+  <a class="btn web" id="web" href="#">Tarayıcıda aç</a>
+  <div class="hint" id="hint">Açılmazsa sağ üstteki <b>⋯</b> menüsünden <b>"Harici tarayıcıda aç"</b> seçeneğine dokun.</div>
+</div>
+<script>
+  // Akademik Cahiller kanal sayfasını YouTube uygulamasında açar.
+  // ?v=VIDEO_ID verilirse kanal yerine o videoyu açar.
+  var KANAL = "www.youtube.com/@akademikcahiller";
+  var q = new URLSearchParams(location.search);
+  var v = (q.get("v") || "").replace(/[^A-Za-z0-9_-]/g, "").slice(0, 11);
+  var path = v ? "www.youtube.com/watch?v=" + v : KANAL;
+  var web = "https://" + path;
+  var ua = navigator.userAgent || "";
+  var android = /Android/i.test(ua), ios = /iPhone|iPad|iPod/i.test(ua);
+  var inApp = /Instagram|FBAN|FBAV|TikTok|Twitter/i.test(ua);
+
+  var app = web;
+  if (android) app = "intent://" + path + "#Intent;scheme=https;package=com.google.android.youtube;S.browser_fallback_url=" + encodeURIComponent(web) + ";end";
+  else if (ios) app = "youtube://" + path;
+
+  document.getElementById("app").href = app;
+  document.getElementById("web").href = web;
+  document.getElementById("logo").style.backgroundImage = "url(logo.jpg)";
+
+  if (!android && !ios) { location.replace(web); }
+  else {
+    setTimeout(function () { location.href = app; }, 60);
+    setTimeout(function () { if (inApp) document.getElementById("hint").style.display = "block"; }, 1800);
+  }
+</script>
+</body>
+</html>
